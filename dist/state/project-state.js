@@ -1,26 +1,19 @@
 import { Project, ProjectStatus } from "../models/project.js";
-
-// Project State Management
-type Listener<T> = (items: T[]) => void;
-
-class State<T> {
-    protected listeners: Listener<T>[] = []; // array of Functions
-
+class State {
+    constructor() {
+        this.listeners = []; // array of Functions
+    }
     // used whenever project changes e.g. adding a new project
-    addListener(listenerFn: Listener<T>) {
+    addListener(listenerFn) {
         this.listeners.push(listenerFn);
     }
 }
-
 // Project State Management similar to Redux for React || NgRx for Angular
-export class ProjectState extends State<Project> {
-    private projects: Project[] = []; // array of stored projects
-    private static instance: ProjectState;
-
-    private constructor() {
+export class ProjectState extends State {
+    constructor() {
         super();
+        this.projects = []; // array of stored projects
     }
-
     // Limiting global scope to only has 1 instance of ProjectState
     static getInstance() {
         if (this.instance) {
@@ -29,15 +22,8 @@ export class ProjectState extends State<Project> {
         this.instance = new ProjectState();
         return this.instance;
     }
-
-    addProject(title: string, description: string, numOfPeople: number) {
-        const newProject = new Project(
-            Math.random().toString(), 
-            title, 
-            description, 
-            numOfPeople,
-            ProjectStatus.Active
-            )
+    addProject(title, description, numOfPeople) {
+        const newProject = new Project(Math.random().toString(), title, description, numOfPeople, ProjectStatus.Active);
         // const newProject = {
         //     id: Math.random().toString(),
         //     title: title,
@@ -46,12 +32,10 @@ export class ProjectState extends State<Project> {
         // };
         this.projects.push(newProject);
         this.updateListeners();
-        }
-
+    }
     // projectId = map this.projects: Project[] Array => flip status
-    moveProject(projectId: string, newStatus: ProjectStatus) {
+    moveProject(projectId, newStatus) {
         const project = this.projects.find(prj => prj.id === projectId);
-
         // check if project exists
         if (project && project.status !== newStatus) {
             // changing extracted project.status => newStatus
@@ -59,17 +43,15 @@ export class ProjectState extends State<Project> {
             this.updateListeners();
         }
     }
-
-    private updateListeners() {
+    updateListeners() {
         for (const listenerFn of this.listeners) {
             // only parse in a copy of this.projects
             // every listenerFn getting executed & 
             // gets our brand new copy of projects
-            listenerFn(this.projects.slice()); 
+            listenerFn(this.projects.slice());
         }
     }
 }
-
 // global only has 1 instance of ProjectState
 // static getInstance()
 export const projectState = ProjectState.getInstance();
