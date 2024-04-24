@@ -1,7 +1,7 @@
-import { Component } from './base-component.js';
-import { Draggable } from '../models/drag-drop.js';
-import { Project } from '../models/project.js';
-import { Autobinding } from '../decorators/autobinding.js';
+import { Component } from './base-component';
+import { Draggable } from '../models/drag-drop';
+import { Project } from '../models/project';
+import { Autobinding } from '../decorators/autobinding';
 
 // ProjectItem Class
 // class ProjectItem extends Component<T extends whereToRender, U extends elementToRender>

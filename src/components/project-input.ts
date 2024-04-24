@@ -1,7 +1,7 @@
-import { Component } from './base-component.js';
-import { Validatable, validateInput } from '../util/validation.js';
-import { Autobinding } from '../decorators/autobinding.js';
-import { projectState } from '../state/project-state.js';
+import { Component } from './base-component';
+import { Validatable, validateInput } from '../util/validation';
+import { Autobinding } from '../decorators/autobinding';
+import { projectState } from '../state/project-state';
 
 // Singleton design pattern
 // class ProjectInput extends Component<T extends whereToRender, U extends elementToRender>
